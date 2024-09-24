@@ -15,7 +15,10 @@ export default function ErrorBoundary() {
 
   useEffect(() => {
     if (isRouteErrorResponse(error)) {
-      setErrorState({ status: error.status, message: error.data || error.statusText });
+      setErrorState({
+        status: (error as { status: number }).status,
+        message: (error as { data?: string; statusText: string }).data || (error as { statusText: string }).statusText,
+      });
     } else if (error instanceof Error) {
       setErrorState({ message: error.message });
     } else if (typeof error === 'string') {
